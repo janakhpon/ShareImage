@@ -10,10 +10,15 @@
   },
   "dependencies": {
     "@material-ui/core": "latest",
-    "clsx": "latest",
+    "@material-ui/icons": "^4.5.1",
+    "clsx": "^1.0.4",
+    "history": "^4.10.1",
+    "moment": "^2.24.0",
     "react": "latest",
     "react-dom": "latest",
-    "react-scripts": "latest"
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "latest",
+    "styled-components": "^4.4.1"
   },
   "browserslist": {
     "production": [
