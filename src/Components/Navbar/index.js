@@ -14,6 +14,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Link, useHistory } from 'react-router-dom'
+import styled from 'styled-components'
+import * as routes from '../../Routes'
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -25,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         display: 'none',
         fontSize: '95%',
-        padding: theme.spacing(1,0,1,0),
+        padding: theme.spacing(1, 0, 1, 0),
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
@@ -79,6 +82,15 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const NavLink = styled(Link)`
+    text-decoration: none;
+    text-align: center;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
+`;
+
 export default function PrimarySearchAppBar() {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -115,7 +127,12 @@ export default function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <NavLink to={routes.LIST}>
+                    HOME
+            </NavLink>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         </Menu>
     );
@@ -163,16 +180,8 @@ export default function PrimarySearchAppBar() {
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static"  style={{ background: 'transparent', boxShadow: 'none'}}>
+            <AppBar position="static" style={{ background: 'transparent', boxShadow: 'none' }}>
                 <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton aria-label="show 4 new mails" color="inherit">

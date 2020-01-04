@@ -7,6 +7,7 @@ import PageHome from '../Components/Home'
 import PageRegister from '../Components/Register'
 import PageSignup from '../Components/Signup'
 import PageSignin from '../Components/Signin'
+import PageList from '../Components/List'
 
 const Layout = () => {
   let location = useLocation()
@@ -16,8 +17,8 @@ const Layout = () => {
         && location.pathname !== '/Page-signin'
         && <PageNav />
       }
-      <Grid container alignItems='center' alignContent="flex-start" justify="center">
-        <Grid item>
+      <Grid container alignContent="center" justify="center">
+        <Grid item xs={12} sm={12} md={10} lg={10} xl={8}>
           <Route
             exact
             path={routes.HOME}
@@ -38,6 +39,11 @@ const Layout = () => {
             path={routes.SIGNIN}
             component={() => <PageSignin />}
           />
+          <Route
+          exact
+          path={routes.LIST}
+          component={() => <PageList />}
+        />
         </Grid>
       </Grid>
     </>
