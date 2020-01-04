@@ -9,16 +9,29 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         padding: theme.spacing(2),
-        margin: theme.spacing(2),
+        margin: theme.spacing(1),
+        background: 'transparent',
     },
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
         maxWidth: '100%',
+        background: '#002c4c',
+        color: '#ffffff',
     },
     image: {
-        width: 300,
-        height: 200,
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            height: '100%',
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '100%',
+            height: '100%',
+        },
+        [theme.breakpoints.up('lg')]: {
+            width: 300,
+            height: 200,
+        },
     },
     img: {
         margin: 'auto',

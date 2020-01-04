@@ -12,31 +12,78 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid'
 import PageListItem from '../ListItem'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+    multilineColor: {
+        color: 'red'
+    },
+    fabbtn: {
+        margin: theme.spacing(4),
+        padding: theme.spacing(4),
+    },
+    Dialog: {
+        background: '#002c4c',
+        color: '#ffffff',
+    },
+    Dialogcontent: {
+        maxWidth: '100%',
+        background: '#002c4c',
+        color: '#ffffff',
     },
 }));
+
+
+const styles = {
+    underline: {
+        // normal style
+        "&::before": {
+            borderBottom: "4px solid green"
+        },
+        // hover style
+        "&:hover:not(.Mui-disabled):before": {
+            borderBottom: "4px solid blue"
+        },
+        // focus style
+        "&::after": {
+            borderBottom: "4px solid red"
+        },
+
+        background: '#002c4c',
+        color: '#ffffff',
+    }
+};
+
+const CustomTextField = withStyles(styles)(props => {
+    const { classes, ...other } = props;
+    return <TextField InputProps={{ className: classes.underline }} {...other} />;
+});
+
 
 export default function PageList() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [hidden, setHidden] = React.useState(false);
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
     const handleClose = () => {
         setOpen(false);
     };
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
     return (
         <>
             <Grid container alignContent="center" justify="center">
@@ -46,12 +93,66 @@ export default function PageList() {
                         justify="flex-start"
                         alignItems="flex-start">
                         <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-                            <Fab color="primary" aria-label="add">
+                            <Fab size="small" color="primary" aria-label="add" className={classes.fabbtn} onClick={handleClickOpen}>
                                 <AddIcon />
                             </Fab>
                         </Grid>
                         <Grid item xs={8} sm={8} md={9} lg={8} xl={8}>
+                        </Grid>
+                    </Grid>
+                    <Grid container direction="row" justify="center" alignItems="center">
+                        <Grid item xs={12}>
+                            <Dialog
+                                fullScreen={fullScreen}
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="responsive-dialog-title"
 
+                                PaperProps={{
+                                    classes: {
+                                        root: classes.Dialog
+                                    }
+                                }}
+
+                            >
+                                <DialogTitle id="responsive-dialog-title">{" Don't Forget to choose your privacy options!"}</DialogTitle>
+                                <DialogContent >
+
+                                    <CustomTextField
+                                        // onChange={handleChange}
+                                        // value={values.title}
+                                        autoFocus
+                                        margin="dense"
+                                        id="name"
+                                        name="title"
+                                        label="Task Title"
+                                        type="text"
+                                        fullWidth
+                                    />
+
+                                    <CustomTextField
+                                        autoFocus
+                                        // onChange={handleChange}
+                                        // value={values.body}
+                                        margin="dense"
+                                        id="body"
+                                        name="body"
+                                        label="Task Description"
+                                        type="text"
+                                        fullWidth
+                                    />
+
+
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button autoFocus color="primary">
+                                        SAVE
+                                     </Button>
+                                    <Button onClick={handleClose} color="primary" autoFocus>
+                                        CANCEL
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </Grid>
                     </Grid>
                     <PageListItem />
