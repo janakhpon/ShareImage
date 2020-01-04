@@ -163,7 +163,7 @@ export default function PrimarySearchAppBar() {
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static"  style={{ background: 'transparent', boxShadow: 'none'}}>
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -173,22 +173,6 @@ export default function PrimarySearchAppBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        နည်းပညာတက္ကသိုလ်(မော်လမြိုင်)
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton aria-label="show 4 new mails" color="inherit">
