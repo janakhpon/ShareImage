@@ -8,15 +8,23 @@ const theme = createMuiTheme({
       main: '#556cd6',
     },
     secondary: {
-      main: '#19857b',
+      main: '#2ec4b6',
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: '#fff',
+      default: '#011627',
     },
+    text: {
+      default: '#fdfffc',
+    },
+    textColor: '#fdfffc',
+  },
+  root: {
+    textDecoration: 'none',
   },
 });
+
 
 export default theme;
