@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import * as routes from '../../constants/routes'
+import * as routes from '../../Routes'
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -21,8 +21,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import { useHistory } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks';
-import { CREATE_USER } from '../Queries';
 
 const NavLink = styled(Link)`
     text-decoration: none;
@@ -101,7 +99,6 @@ const PageSignup = () => {
     const history = useHistory()
     const [values, setValues] = React.useState(INITIAL_VALUES)
     const [open, setOpen] = React.useState(true);
-    const [createUser, { loading, data, error }] = useMutation(CREATE_USER);
     const classes = useStyles();
     const handleChange = (e) => {
         e.persist();
@@ -121,7 +118,7 @@ const PageSignup = () => {
         let phone = values.phone
         let password = values.password
         try {
-            await createUser({ variables: { name, email, phone, password } })
+            
         } catch (err) {
             setOpen(true)
         }
@@ -129,49 +126,6 @@ const PageSignup = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-            {
-                loading ? (
-                    <Backdrop
-                        className={classes.backdrop}
-                        open={true}
-                    >
-                        <CircularProgress color="secondary" />
-                    </Backdrop>
-                ) : ('')
-            }
-            {
-                error ? (
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={onClose}
-                        autoHideDuration={2000}
-                    >
-                        <SnackbarContent
-                            className={classes.notibox}
-                            aria-describedby="client-snackbar"
-                            message={
-                                <span id="client-snackbar" className={classes.message}>
-                                    {error.graphQLErrors.map(x => x.message)}
-                                </span>
-                            }
-                            action={[
-                                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
-                                    <CloseIcon className={classes.icon} />
-                                </IconButton>,
-                            ]}
-                        />
-                    </Snackbar>
-                ) : ('')
-            }
-            {
-                data ? (
-                    history.push('/Page-signin')
-                ) : ('')
-            }
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -245,7 +199,7 @@ const PageSignup = () => {
           </Button>
                     <Grid container>
                         <Grid item>
-                            <NavLink to={routes.SIGN_IN} variant="body2">
+                            <NavLink to={routes.SIGNIN} variant="body2">
                                 {"Already have an account? Sign In"}
                             </NavLink>
                         </Grid>

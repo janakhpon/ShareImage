@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid'
 import PageNav from '../Components/Navbar'
 import PageHome from '../Components/Home'
 import PageRegister from '../Components/Register'
+import PageSignup from '../Components/Signup'
+import PageSignin from '../Components/Signin'
 
 const Layout = () => {
   let location = useLocation()
@@ -25,6 +27,16 @@ const Layout = () => {
             exact
             path={routes.REGISTER}
             component={() => <PageRegister />}
+          />
+          <Route
+            exact
+            path={routes.SIGNUP}
+            component={() => <PageSignup />}
+          />
+          <Route
+            exact
+            path={routes.SIGNIN}
+            component={() => <PageSignin />}
           />
         </Grid>
       </Grid>
