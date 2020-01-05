@@ -1,27 +1,30 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Backdrop from '@material-ui/core/Backdrop';
-import { amber, green } from '@material-ui/core/colors';
-import CloseIcon from '@material-ui/icons/Close';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Snackbar from '@material-ui/core/Snackbar';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import { useHistory } from 'react-router-dom'
+import React from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import * as routes from '../../Routes'
+import Grid from '@material-ui/core/Grid'
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import { amber, green } from '@material-ui/core/colors'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { useHistory } from 'react-router-dom'
 import { withStyles } from "@material-ui/styles"
+import CloseIcon from '@material-ui/icons/Close';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import axios from 'axios'
+import { URL_USER_SIGNIN } from '../../Requests'
+import setAuthToken from '../utils'
+
+
 const NavLink = styled(Link)`
     text-decoration: none;
     outline: none;
@@ -85,6 +88,20 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
     },
+    margin: {
+        margin: theme.spacing(1),
+        color: theme.palette.secondary.main,
+    },
+    select: {
+        color: "#ffff",
+        "& option": {
+            color: theme.palette.primary.main,
+        },
+        '&.Mui-focused': {
+            color: '#d90429',
+            background: 'transparent',
+        }
+    }
 }))
 
 const styles = {
@@ -123,52 +140,105 @@ const checkBoxStyles = theme => ({
 })
 
 
+
 const INITIAL_VALUES = {
     email: "",
     password: ""
 }
 
+const NOTI_VALUES = {
+    msg: '',
+    err: ''
+}
+
+const CustomTextField = withStyles(styles)(props => {
+    const { classes, ...other } = props;
+    return <TextField InputProps={{ className: classes.underline }} InputLabelProps={{ className: classes.formLabel }} {...other} />;
+});
+
+
+const formData = new FormData()
+
+
 const PageSignin = () => {
     const history = useHistory()
     const [values, setValues] = React.useState(INITIAL_VALUES)
-    const [open, setOpen] = React.useState(true)
+    const [noti, setNoti] = React.useState(NOTI_VALUES)
+    const [snackopen, setSnackopen] = React.useState(true)
+
+
     const classes = useStyles();
-
-
     const handleChange = (e) => {
         e.persist();
         setValues(previousValues => ({
             ...previousValues, [e.target.name]: e.target.value
         }))
 
+
     }
 
     const onClose = () => {
-        setOpen(false)
+        setSnackopen(false)
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         let email = values.email
         let password = values.password
-        try {
+        formData.set('email', email)
+        formData.set('password', password)
 
-            history.push('/Page-me')
+        try {
+            const cb = await axios({
+                method: 'post',
+                url: URL_USER_SIGNIN,
+                data: formData,
+                config: { headers: { 'Content-Type': 'multipart/form-data' } }
+            })
+            if (cb.data.err !== '') {
+                setNoti({ err: cb.data.err })
+            } else {
+                setSnackopen(false)
+                history.push('Page-list')
+            }
+
         } catch (err) {
-            setOpen(true)
+            setNoti({ err: err })
         }
     }
-
-    const CustomTextField = withStyles(styles)(props => {
-        const { classes, ...other } = props;
-        return <TextField InputProps={{ className: classes.underline }} InputLabelProps={{ className: classes.formLabel }} {...other} />;
-    });
-
 
     const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
 
     return (
         <Container component="main" maxWidth="xs">
+            {
+                noti.err ? (
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                        open={snackopen}
+                        onClose={onClose}
+                        autoHideDuration={2000}
+                    >
+                        <SnackbarContent
+                            className={classes.notibox}
+                            aria-describedby="client-snackbar"
+                            message={
+                                <span id="client-snackbar" className={classes.message}>
+                                    {noti.err}
+                                </span>
+                            }
+                            action={[
+                                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+                                    <CloseIcon className={classes.icon} />
+                                </IconButton>,
+                            ]}
+                        />
+                    </Snackbar>
+                ) : ('')
+            }
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -176,9 +246,8 @@ const PageSignin = () => {
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     UNLOCK YOUR ACCOUNT
-        </Typography>
+                </Typography>
                 <form className={classes.form} noValidate>
-
                     <CustomTextField
                         variant="outlined"
                         margin="normal"
@@ -190,9 +259,7 @@ const PageSignin = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
-
                     />
-
                     <CustomTextField
                         variant="outlined"
                         margin="normal"
@@ -204,14 +271,14 @@ const PageSignin = () => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-
                     />
-
 
                     <FormControlLabel
                         control={<CustomCheckbox value="remember" color="primary" />}
                         label="Remember me"
                     />
+
+
                     <Button
                         type="submit"
                         fullWidth
@@ -221,11 +288,11 @@ const PageSignin = () => {
                         className={classes.submit}
                     >
                         SIGN IN
-          </Button>
+                     </Button>
                     <Grid container
                         direction="row"
                         justify="center"
-                        alignItems="center">
+                        alignitems="center">
                         <Grid item xs={6} >
                             <NavLink to={routes.SIGNUP} variant="body2" alignItems="center">
                                 {"Don't have an account? SIGN UP"}
