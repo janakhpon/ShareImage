@@ -20,7 +20,13 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import InputBase from '@material-ui/core/InputBase';
+import InputLabel from '@material-ui/core/InputLabel';
 import { useHistory } from 'react-router-dom'
+import { withStyles } from "@material-ui/styles";
 
 const NavLink = styled(Link)`
     text-decoration: none;
@@ -46,7 +52,6 @@ const useStyles = makeStyles(theme => ({
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
-        color: "#ffffff",
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -86,7 +91,58 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
     },
-}));
+    margin: {
+        margin: theme.spacing(1),
+        color: theme.palette.secondary.main,
+    },
+    select: {
+        color: "#ffff",
+        "& option": {
+            color: theme.palette.primary.main,
+        },
+        '&.Mui-focused': {
+            color: '#d90429',
+            background: 'transparent',
+        }
+    }
+}))
+
+const styles = {
+    underline: {
+        // normal style
+        "&::before": {
+            borderBottom: "4px solid green"
+        },
+        // hover style
+        "&:hover:not(.Mui-disabled):before": {
+            borderBottom: "4px solid blue"
+        },
+        // focus style
+        "&::after": {
+            borderBottom: "4px solid red"
+        },
+
+        background: 'transparent',
+        color: '#ffffff',
+    },
+    formLabel: {
+        color: '#ffffff',
+        '&.Mui-focused': {
+            color: '#d90429'
+        }
+    },
+}
+
+const checkBoxStyles = theme => ({
+    root: {
+        '&$checked': {
+            color: '#d90429',
+        },
+    },
+    checked: {},
+})
+
+
 
 const INITIAL_VALUES = {
     name: "",
@@ -95,10 +151,20 @@ const INITIAL_VALUES = {
     password: ""
 }
 
+const CustomTextField = withStyles(styles)(props => {
+    const { classes, ...other } = props;
+    return <TextField InputProps={{ className: classes.underline }} InputLabelProps={{ className: classes.formLabel }} {...other} />;
+});
+
+
+const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
+
 const PageSignup = () => {
     const history = useHistory()
     const [values, setValues] = React.useState(INITIAL_VALUES)
     const [open, setOpen] = React.useState(true);
+    const [select, setSelect] = React.useState('');
+
     const classes = useStyles();
     const handleChange = (e) => {
         e.persist();
@@ -118,11 +184,15 @@ const PageSignup = () => {
         let phone = values.phone
         let password = values.password
         try {
-            
+
         } catch (err) {
             setOpen(true)
         }
     }
+
+    const handleSelectChange = event => {
+        setSelect(event.target.value)
+    };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -133,9 +203,9 @@ const PageSignup = () => {
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     CREATE AN ACCOUNT
-        </Typography>
+                </Typography>
                 <form className={classes.form} noValidate>
-                    <TextField
+                    <CustomTextField
                         variant="outlined"
                         margin="normal"
                         onChange={handleChange}
@@ -146,8 +216,9 @@ const PageSignup = () => {
                         name="name"
                         autoComplete="name"
                         autoFocus
+
                     />
-                    <TextField
+                    <CustomTextField
                         variant="outlined"
                         margin="normal"
                         onChange={handleChange}
@@ -159,7 +230,7 @@ const PageSignup = () => {
                         autoComplete="email"
                         autoFocus
                     />
-                    <TextField
+                    <CustomTextField
                         variant="outlined"
                         margin="normal"
                         onChange={handleChange}
@@ -171,7 +242,7 @@ const PageSignup = () => {
                         autoComplete="name"
                         autoFocus
                     />
-                    <TextField
+                    <CustomTextField
                         variant="outlined"
                         margin="normal"
                         onChange={handleChange}
@@ -183,8 +254,22 @@ const PageSignup = () => {
                         id="password"
                         autoComplete="current-password"
                     />
+                    <FormControl className={classes.margin} fullWidth>
+                        <InputLabel className={classes.select} htmlFor="demo-customized-select-native">Age</InputLabel>
+                        <NativeSelect
+                            id="demo-customized-select-native"
+                            value={select}
+                            onChange={handleSelectChange}
+                            className={classes.select}
+                        >
+                            <option value="none" />
+                            <option value={"Student"}>Student</option>
+                            <option value={"Teacher"}>Teacher</option>
+                        </NativeSelect>
+                    </FormControl>
+
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={<CustomCheckbox value="remember" color="primary" />}
                         label="Remember me"
                     />
                     <Button
@@ -196,9 +281,12 @@ const PageSignup = () => {
                         className={classes.submit}
                     >
                         SIGN UP
-          </Button>
-                    <Grid container>
-                        <Grid item>
+                     </Button>
+                    <Grid container
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
+                        <Grid item xs={6} >
                             <NavLink to={routes.SIGNIN} variant="body2">
                                 {"Already have an account? Sign In"}
                             </NavLink>
