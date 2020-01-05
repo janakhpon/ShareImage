@@ -21,6 +21,7 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import * as routes from '../../Routes'
+import { withStyles } from "@material-ui/styles"
 const NavLink = styled(Link)`
     text-decoration: none;
     outline: none;
@@ -45,7 +46,6 @@ const useStyles = makeStyles(theme => ({
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
-        color: "#ffffff",
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -85,7 +85,43 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
     },
-}));
+}))
+
+const styles = {
+    underline: {
+        // normal style
+        "&::before": {
+            borderBottom: "4px solid green"
+        },
+        // hover style
+        "&:hover:not(.Mui-disabled):before": {
+            borderBottom: "4px solid blue"
+        },
+        // focus style
+        "&::after": {
+            borderBottom: "4px solid red"
+        },
+
+        background: 'transparent',
+        color: '#ffffff',
+    },
+    formLabel: {
+        color: '#ffffff',
+        '&.Mui-focused': {
+            color: '#d90429'
+        }
+    },
+}
+
+const checkBoxStyles = theme => ({
+    root: {
+        '&$checked': {
+            color: '#d90429',
+        },
+    },
+    checked: {},
+})
+
 
 const INITIAL_VALUES = {
     email: "",
@@ -123,6 +159,14 @@ const PageSignin = () => {
         }
     }
 
+    const CustomTextField = withStyles(styles)(props => {
+        const { classes, ...other } = props;
+        return <TextField InputProps={{ className: classes.underline }} InputLabelProps={{ className: classes.formLabel }} {...other} />;
+    });
+
+
+    const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -135,7 +179,7 @@ const PageSignin = () => {
         </Typography>
                 <form className={classes.form} noValidate>
 
-                    <TextField
+                    <CustomTextField
                         variant="outlined"
                         margin="normal"
                         onChange={handleChange}
@@ -146,9 +190,10 @@ const PageSignin = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
+
                     />
 
-                    <TextField
+                    <CustomTextField
                         variant="outlined"
                         margin="normal"
                         onChange={handleChange}
@@ -159,9 +204,12 @@ const PageSignin = () => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+
                     />
+
+
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={<CustomCheckbox value="remember" color="primary" />}
                         label="Remember me"
                     />
                     <Button
@@ -174,8 +222,11 @@ const PageSignin = () => {
                     >
                         SIGN IN
           </Button>
-                    <Grid container>
-                        <Grid item alignItems="center">
+                    <Grid container
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
+                        <Grid item xs={6} >
                             <NavLink to={routes.SIGNUP} variant="body2" alignItems="center">
                                 {"Don't have an account? SIGN UP"}
                             </NavLink>

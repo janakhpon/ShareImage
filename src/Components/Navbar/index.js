@@ -132,8 +132,16 @@ export default function PrimarySearchAppBar() {
                     HOME
             </NavLink>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <NavLink to={routes.SIGNUP}>
+                    REGISTER
+            </NavLink>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <NavLink to={routes.SIGNIN}>
+                    LOGIN
+            </NavLink>
+            </MenuItem>
         </Menu>
     );
 

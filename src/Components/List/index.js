@@ -42,6 +42,13 @@ const useStyles = makeStyles(theme => ({
         background: '#002c4c',
         color: '#ffffff',
     },
+    formLabel: {
+        background: '#002c4c',
+        color: '#02c39a',
+        '&.Mui-focused': {
+            color: '#02c39a'
+        }
+    }
 }));
 
 
@@ -70,20 +77,42 @@ const CustomTextField = withStyles(styles)(props => {
     return <TextField InputProps={{ className: classes.underline }} {...other} />;
 });
 
+const INITIAL_STATE = {
+    description: '',
+    image: null
+}
 
 export default function PageList() {
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const classes = useStyles()
+    const [values, setValues] = React.useState(INITIAL_STATE)
+    const [open, setOpen] = React.useState(false)
+    const theme = useTheme()
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+    const formData = new FormData()
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpen(true)
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpen(false)
     };
+
+    const handleImageChange = (e) => {
+        setValues({ image: e.target.files })
+        formData.append('image', e.target.files[0])
+    }
+
+    const handleDescriptionChange = (e) => {
+        setValues({ description: e.target.value })
+        formData.append('description', e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+    }
+
     return (
         <>
             <Grid container alignContent="center" justify="center">
@@ -119,27 +148,34 @@ export default function PageList() {
                                 <DialogContent >
 
                                     <CustomTextField
-                                        // onChange={handleChange}
-                                        // value={values.title}
+                                        onChange={handleDescriptionChange}
+                                        value={values.description}
                                         autoFocus
                                         margin="dense"
-                                        id="name"
-                                        name="title"
-                                        label="Task Title"
+                                        id="description"
+                                        name="Description"
+                                        label="Descibe your file"
                                         type="text"
                                         fullWidth
+                                        InputLabelProps={{
+                                            className: classes.formLabel
+                                        }}
                                     />
 
                                     <CustomTextField
+                                        ref={values.image}
+                                        onChange={handleImageChange}
                                         autoFocus
-                                        // onChange={handleChange}
-                                        // value={values.body}
                                         margin="dense"
-                                        id="body"
-                                        name="body"
-                                        label="Task Description"
-                                        type="text"
+                                        id="description"
+                                        name="Description"
+                                        label="Descibe your file"
+                                        type="file"
+                                        accept="image/*"
                                         fullWidth
+                                        InputLabelProps={{
+                                            className: classes.formLabel
+                                        }}
                                     />
 
 
