@@ -1,32 +1,29 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import React from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import * as routes from '../../Routes'
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Backdrop from '@material-ui/core/Backdrop';
-import { amber, green } from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import { amber, green } from '@material-ui/core/colors'
+import FormControl from '@material-ui/core/FormControl'
+import NativeSelect from '@material-ui/core/NativeSelect'
+import InputLabel from '@material-ui/core/InputLabel'
+import { useHistory } from 'react-router-dom'
+import { withStyles } from "@material-ui/styles"
+import axios from 'axios'
+import { URL_USER_SIGNUP } from '../../Requests'
 import CloseIcon from '@material-ui/icons/Close';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputBase from '@material-ui/core/InputBase';
-import InputLabel from '@material-ui/core/InputLabel';
-import { useHistory } from 'react-router-dom'
-import { withStyles } from "@material-ui/styles";
 
 const NavLink = styled(Link)`
     text-decoration: none;
@@ -133,14 +130,6 @@ const styles = {
     },
 }
 
-const checkBoxStyles = theme => ({
-    root: {
-        '&$checked': {
-            color: '#d90429',
-        },
-    },
-    checked: {},
-})
 
 
 
@@ -148,7 +137,13 @@ const INITIAL_VALUES = {
     name: "",
     email: "",
     phone: "",
-    password: ""
+    password: "",
+    position: ""
+}
+
+const NOTI_VALUES = {
+    msg: '',
+    err: ''
 }
 
 const CustomTextField = withStyles(styles)(props => {
@@ -157,13 +152,19 @@ const CustomTextField = withStyles(styles)(props => {
 });
 
 
-const CustomCheckbox = withStyles(checkBoxStyles)(Checkbox);
+const formData = new FormData()
+
 
 const PageSignup = () => {
     const history = useHistory()
     const [values, setValues] = React.useState(INITIAL_VALUES)
+    const [noti, setNoti] = React.useState(NOTI_VALUES)
     const [open, setOpen] = React.useState(true);
+    const [snackopen, setSnackopen] = React.useState(true);
     const [select, setSelect] = React.useState('');
+    let err = ''
+    let flag = Boolean(false)
+
 
     const classes = useStyles();
     const handleChange = (e) => {
@@ -171,10 +172,11 @@ const PageSignup = () => {
         setValues(previousValues => ({
             ...previousValues, [e.target.name]: e.target.value
         }))
+
     }
 
     const onClose = () => {
-        setOpen(false)
+        setSnackopen(false)
     }
 
     const handleSubmit = async (e) => {
@@ -183,10 +185,30 @@ const PageSignup = () => {
         let email = values.email
         let phone = values.phone
         let password = values.password
+        let position = select
+        formData.set('username', name)
+        formData.set('email', email)
+        formData.set('phone', phone)
+        formData.set('password', password)
+        formData.set('position', position)
         try {
+            const cb = await axios({
+                method: 'post',
+                url: URL_USER_SIGNUP,
+                data: formData,
+                config: { headers: { 'Content-Type': 'multipart/form-data' } }
+            })
+            if (cb.data.err !== '') {
+                setNoti({ err: cb.data.err })
+            } else {
+                setSnackopen(false)
+                history.push('/Page-signin')
+            }
 
         } catch (err) {
-            setOpen(true)
+            setSnackopen(true)
+            flag = Boolean(true)
+            err = err
         }
     }
 
@@ -196,6 +218,34 @@ const PageSignup = () => {
 
     return (
         <Container component="main" maxWidth="xs">
+            {
+                noti.err ? (
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                        open={snackopen}
+                        onClose={onClose}
+                        autoHideDuration={2000}
+                    >
+                        <SnackbarContent
+                            className={classes.notibox}
+                            aria-describedby="client-snackbar"
+                            message={
+                                <span id="client-snackbar" className={classes.message}>
+                                    {noti.err}
+                                </span>
+                            }
+                            action={[
+                                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+                                    <CloseIcon className={classes.icon} />
+                                </IconButton>,
+                            ]}
+                        />
+                    </Snackbar>
+                ) : ('')
+            }
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -255,7 +305,7 @@ const PageSignup = () => {
                         autoComplete="current-password"
                     />
                     <FormControl className={classes.margin} fullWidth>
-                        <InputLabel className={classes.select} htmlFor="demo-customized-select-native">Age</InputLabel>
+                        <InputLabel className={classes.select} htmlFor="demo-customized-select-native">Your Position</InputLabel>
                         <NativeSelect
                             id="demo-customized-select-native"
                             value={select}
@@ -268,10 +318,6 @@ const PageSignup = () => {
                         </NativeSelect>
                     </FormControl>
 
-                    <FormControlLabel
-                        control={<CustomCheckbox value="remember" color="primary" />}
-                        label="Remember me"
-                    />
                     <Button
                         type="submit"
                         fullWidth
