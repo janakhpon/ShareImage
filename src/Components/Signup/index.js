@@ -206,9 +206,7 @@ const PageSignup = () => {
             }
 
         } catch (err) {
-            setSnackopen(true)
-            flag = Boolean(true)
-            err = err
+            setNoti({ err: err })
         }
     }
 
@@ -331,7 +329,7 @@ const PageSignup = () => {
                     <Grid container
                         direction="row"
                         justify="center"
-                        alignItems="center">
+                        alignitems="center">
                         <Grid item xs={6} >
                             <NavLink to={routes.SIGNIN} variant="body2">
                                 {"Already have an account? Sign In"}
