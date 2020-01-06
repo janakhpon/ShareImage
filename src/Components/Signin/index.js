@@ -198,6 +198,8 @@ const PageSignin = () => {
             if (cb.data.err !== '') {
                 setNoti({ err: cb.data.err })
             } else {
+                localStorage.setItem('token', cb.data.token);
+                setAuthToken(cb.data.token)
                 setSnackopen(false)
                 history.push('Page-list')
             }

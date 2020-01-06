@@ -1,19 +1,16 @@
-import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import React from 'react'
+import { fade, makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Badge from '@material-ui/core/Badge'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import MoreIcon from '@material-ui/icons/MoreVert'
+import LockIcon from '@material-ui/icons/Lock'
+import Button from '@material-ui/core/Button'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import * as routes from '../../Routes'
@@ -54,7 +51,7 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         pointerEvents: 'none',
         display: 'flex',
-        alignItems: 'center',
+        alignitems: 'center',
         justifyContent: 'center',
     },
     inputRoot: {
@@ -80,18 +77,22 @@ const useStyles = makeStyles(theme => ({
             display: 'none',
         },
     },
+    button: {
+        margin: theme.spacing(1),
+        color: "#d90429",
+    },
 }));
 
 const NavLink = styled(Link)`
     text-decoration: none;
     text-align: center;
-
     &:focus, &:hover, &:visited, &:link, &:active {
         text-decoration: none;
     }
 `;
 
 export default function PrimarySearchAppBar() {
+    const history = useHistory()
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -101,20 +102,25 @@ export default function PrimarySearchAppBar() {
 
     const handleProfileMenuOpen = event => {
         setAnchorEl(event.currentTarget);
-    };
+    }
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
-    };
+    }
 
     const handleMenuClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
-    };
+    }
 
     const handleMobileMenuOpen = event => {
         setMobileMoreAnchorEl(event.currentTarget);
-    };
+    }
+
+    const lockMeOut = (e) => {
+        localStorage.clear();
+        history.push('/Page-signin')
+    }
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -141,6 +147,17 @@ export default function PrimarySearchAppBar() {
                 <NavLink to={routes.SIGNIN}>
                     LOGIN
             </NavLink>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button
+                    color="secondary"
+                    size="small"
+                    className={classes.button}
+                    startIcon={<LockIcon />}
+                    onClick={lockMeOut}
+                >
+                    SIGNOUT
+    </Button>
             </MenuItem>
         </Menu>
     );

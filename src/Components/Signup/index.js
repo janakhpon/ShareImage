@@ -19,11 +19,10 @@ import { useHistory } from 'react-router-dom'
 import { withStyles } from "@material-ui/styles"
 import axios from 'axios'
 import { URL_USER_SIGNUP } from '../../Requests'
-import CloseIcon from '@material-ui/icons/Close';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Snackbar from '@material-ui/core/Snackbar';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close'
+import SnackbarContent from '@material-ui/core/SnackbarContent'
+import Snackbar from '@material-ui/core/Snackbar'
+import IconButton from '@material-ui/core/IconButton'
 
 const NavLink = styled(Link)`
     text-decoration: none;
@@ -159,28 +158,22 @@ const PageSignup = () => {
     const history = useHistory()
     const [values, setValues] = React.useState(INITIAL_VALUES)
     const [noti, setNoti] = React.useState(NOTI_VALUES)
-    const [open, setOpen] = React.useState(true);
-    const [snackopen, setSnackopen] = React.useState(true);
-    const [select, setSelect] = React.useState('');
-    let err = ''
-    let flag = Boolean(false)
-
-
-    const classes = useStyles();
+    const [open, setOpen] = React.useState(true)
+    const [select, setSelect] = React.useState('')
+    const classes = useStyles()
     const handleChange = (e) => {
-        e.persist();
+        e.persist()
         setValues(previousValues => ({
             ...previousValues, [e.target.name]: e.target.value
         }))
-
     }
 
     const onClose = () => {
-        setSnackopen(false)
+        setOpen(false)
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         let name = values.name
         let email = values.email
         let phone = values.phone
@@ -201,7 +194,7 @@ const PageSignup = () => {
             if (cb.data.err !== '') {
                 setNoti({ err: cb.data.err })
             } else {
-                setSnackopen(false)
+                setOpen(false)
                 history.push('/Page-signin')
             }
 
@@ -212,7 +205,7 @@ const PageSignup = () => {
 
     const handleSelectChange = event => {
         setSelect(event.target.value)
-    };
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -223,7 +216,7 @@ const PageSignup = () => {
                             vertical: 'bottom',
                             horizontal: 'right',
                         }}
-                        open={snackopen}
+                        open={open}
                         onClose={onClose}
                         autoHideDuration={2000}
                     >
