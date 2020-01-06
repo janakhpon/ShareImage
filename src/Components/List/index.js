@@ -1,26 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
+import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import PageListItem from '../ListItem'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
-import { withStyles } from "@material-ui/styles";
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/core/styles'
+import { withStyles } from "@material-ui/styles"
+import { URL_ME } from '../../Requests'
+import axios from 'axios'
+import CloseIcon from '@material-ui/icons/Close'
+import SnackbarContent from '@material-ui/core/SnackbarContent'
+import Snackbar from '@material-ui/core/Snackbar'
+import IconButton from '@material-ui/core/IconButton'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,7 +46,30 @@ const useStyles = makeStyles(theme => ({
         '&.Mui-focused': {
             color: '#02c39a'
         }
-    }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+    notibox: {
+        color: "#ffffff",
+        backgroundColor: "#20bf55",
+    },
+    icon: {
+        fontSize: 20,
+    },
+    iconVariant: {
+        opacity: 0.9,
+        marginRight: theme.spacing(1),
+    },
+    message: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    margin: {
+        margin: theme.spacing(1),
+        color: theme.palette.secondary.main,
+    },
 }));
 
 
@@ -82,13 +103,51 @@ const INITIAL_STATE = {
     image: null
 }
 
+const NOTI_VALUES = {
+    msg: '',
+    err: ""
+}
+
 export default function PageList() {
     const classes = useStyles()
-    const [values, setValues] = React.useState(INITIAL_STATE)
+    const [user, setUser] = React.useState([])
+    const [noti, setNoti] = React.useState(NOTI_VALUES)
     const [open, setOpen] = React.useState(false)
+    const [values, setValues] = React.useState(INITIAL_STATE)
+    const [snackopen, setSnackopen] = React.useState(true)
     const theme = useTheme()
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
     const formData = new FormData()
+
+
+    useEffect(() => {
+        let isSubscribed = true
+        const getUser = async () => {
+            try {
+                let cb = await axios.get(URL_ME)
+                console.log(cb)
+                if (isSubscribed) {
+                    setUser(cb.data)
+                    setNoti({ msg: `Login as ${cb.data.data.username}`})
+                }
+            } catch (err) {
+                setNoti({ err: "session expired! Login again" })
+            }
+        }
+        try {
+            getUser()
+
+        } catch (err) {
+            setNoti({ err: "session expired! Login again" })
+        }
+
+        //clean up hook
+        return () => isSubscribed = false
+    }, [])
+
+    const onClose = () => {
+        setSnackopen(false)
+    }
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -115,6 +174,59 @@ export default function PageList() {
 
     return (
         <>
+            {
+                noti.err ? (
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                        open={snackopen}
+                        onClose={onClose}
+                        autoHideDuration={2000}
+                    >
+                        <SnackbarContent
+                            className={classes.notibox}
+                            aria-describedby="client-snackbar"
+                            message={
+                                <span id="client-snackbar" className={classes.message}>
+                                    {noti.err}
+                                </span>
+                            }
+                            action={[
+                                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+                                    <CloseIcon className={classes.icon} />
+                                </IconButton>,
+                            ]}
+                        />
+                    </Snackbar>
+                ) : (
+                        <Snackbar
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            open={snackopen}
+                            onClose={onClose}
+                            autoHideDuration={2000}
+                        >
+                            <SnackbarContent
+                                className={classes.notibox}
+                                aria-describedby="client-snackbar"
+                                message={
+                                    <span id="client-snackbar" className={classes.message}>
+                                        {noti.msg}
+                                    </span>
+                                }
+                                action={[
+                                    <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+                                        <CloseIcon className={classes.icon} />
+                                    </IconButton>,
+                                ]}
+                            />
+                        </Snackbar>
+                    )
+            }
             <Grid container alignContent="center" justify="center">
                 <Grid item xs={12} sm={12} md={10} lg={10} xl={8}>
                     <Grid container
@@ -129,7 +241,7 @@ export default function PageList() {
                         <Grid item xs={8} sm={8} md={9} lg={8} xl={8}>
                         </Grid>
                     </Grid>
-                    <Grid container direction="row" justify="center" alignItems="center">
+                    <Grid container direction="row" justify="center" alignitems="center">
                         <Grid item xs={12}>
                             <Dialog
                                 fullScreen={fullScreen}

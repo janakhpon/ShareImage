@@ -5,6 +5,7 @@ export const URL_USER_SIGNUP = `${URL}userapi/usersignup`
 export const URL_USER_SIGNIN = `${URL}userapi/usersignin`
 export const URL_USER_UPDATE = `${URL}userapi/updateuser`
 export const URL_USERS = `${URL}userapi/users`
+export const URL_ME = `${URL}userapi/me`
 export const URL_USER_RESET = `${URL}userapi/reset`
 export const URL_USER_REMOVE = `${URL}userapi/remove/`
 
