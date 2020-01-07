@@ -21,7 +21,6 @@ import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import setAuthToken from '../utils'
 import { useHistory } from 'react-router-dom'
-import PageListUpload from '../ListUpload'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -147,7 +146,7 @@ export default function PageList() {
                         phone: cb.data.data.phone,
                         position: cb.data.data.position
                     })
-                    setNoti({ msg: `Login as ${cb.data.data.username}` })
+                    setNoti({ msg: `Login as ${cb.data.data.username}`})
                 }
             } catch (err) {
                 setNoti({ err: "session expired! Login again" })
@@ -163,7 +162,7 @@ export default function PageList() {
         //clean up hook
         return () => isSubscribed = false
     }, [])
-
+    
 
     const onClose = () => {
         setSnackopen(false)
@@ -214,7 +213,7 @@ export default function PageList() {
 
     return (
         <>
-            {
+        {
                 noti.err ? (
                     <Snackbar
                         anchorOrigin={{
@@ -269,7 +268,7 @@ export default function PageList() {
             }
             <Grid container alignContent="center" justify="center">
                 <Grid item xs={12} sm={12} md={10} lg={10} xl={8}>
-                <Grid container
+                    <Grid container
                         direction="row"
                         justify="flex-start"
                         alignItems="flex-start">
@@ -299,7 +298,25 @@ export default function PageList() {
                                 <DialogTitle id="responsive-dialog-title">{" Don't Forget to choose your privacy options!"}</DialogTitle>
                                 <DialogContent >
 
-                                <PageListUpload />
+                                    <CustomTextField
+                                        onChange={handleDescriptionChange}
+                                        value={values.description}
+                                        autoFocus
+                                        margin="dense"
+                                        id="description"
+                                        name="Description"
+                                        label="Descibe your file"
+                                        type="text"
+                                        fullWidth
+                                        InputLabelProps={{
+                                            className: classes.formLabel
+                                        }}
+                                    />
+
+
+ 
+
+                                    <input type="file" className="form-control-file" id="image" name="image" ref={values.image} onChange={handleImage} />
 
                                   
 
@@ -315,8 +332,6 @@ export default function PageList() {
                             </Dialog>
                         </Grid>
                     </Grid>
-                    
-
                     <PageListItem />
                 </Grid>
             </Grid>
