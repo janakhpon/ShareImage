@@ -21,7 +21,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import setAuthToken from '../utils'
 import { useHistory } from 'react-router-dom'
-import PageListUpload from '../ListUpload'
+import PageListUpload from '../ListForm'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -296,7 +296,7 @@ export default function PageList() {
                                 }}
 
                             >
-                                <DialogTitle id="responsive-dialog-title">{" Don't Forget to choose your privacy options!"}</DialogTitle>
+                                <DialogTitle id="responsive-dialog-title">{"Describe clearly! "}</DialogTitle>
                                 <DialogContent >
 
                                 <PageListUpload />

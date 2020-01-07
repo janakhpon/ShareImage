@@ -1,9 +1,10 @@
 import React from 'react'
+import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import axios from 'axios'
 import { URL_LIST } from '../../Requests'
+import './index.css'
 const formData = new FormData()
-
 
 
 class PageListUpload extends React.Component {
@@ -36,7 +37,7 @@ class PageListUpload extends React.Component {
     handleSubmit = async (e) => {
         e.preventDefault();
 
-        try{
+        try {
             let response = await axios({
                 method: 'post',
                 url: URL_LIST,
@@ -44,8 +45,8 @@ class PageListUpload extends React.Component {
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }
             })
 
-            console.log('crap')
-        }catch(err){
+            console.log(response)
+        } catch (err) {
             console.log(err)
         }
 
@@ -54,35 +55,27 @@ class PageListUpload extends React.Component {
 
 
 
+
     render() {
         return (
             <>
-                <Grid container direction="row" justify="center" alignitems="center">
-                    <Grid item xs={12}>
-                        <form action="/">
+                <Grid container direction="row" justify="center" alignitems="center" spacing={2}>
+                    <Grid item xs={12} className="grid">
+                        <Paper className='paper'>
+                            <input type="text" id="description" name="description" className="form-control" onChange={this.handleDescription} />
+                        </Paper>
+                    </Grid>
 
-                            <div className="row form-group">
+                    <Grid item xs={12} className="grid">
+                        <Paper className='paper' >
+                            <input type="file" className="form-control-file" id="image" name="image" ref={this.image} onChange={this.handleImage} />
+                        </Paper>
+                    </Grid>
 
-                                <div className="col-md-12">
-                                    <label className="text-black" htmlFor="description">Device description</label>
-                                    <input type="text" id="description" name="description" className="form-control" onChange={this.handleDescription} />
-                                </div>
-                            </div>
-
-                            <div className="row form-group">
-                                <div className="col-md-12">
-                                    <label htmlFor="image">Your Art</label>
-                                    <input type="file" className="form-control-file" id="image" name="image" ref={this.image} onChange={this.handleImage} />
-                                </div>
-                            </div>
-
-                            <div className="row form-group">
-                                <div className="col-md-12">
-                                    <input type="submit" value="upload to Gallery" className="btn btn-primary py-2 px-4 text-white" onClick={this.handleSubmit} />
-                                </div>
-                            </div>
-                        </form>
-
+                    <Grid item xs={12} className="grid">
+                        <Paper className='paper'>
+                            <input type="submit" value="upload to Gallery" className="btn btn-primary py-2 px-4 text-white" onClick={this.handleSubmit} />
+                        </Paper>
                     </Grid>
                 </Grid>
 
