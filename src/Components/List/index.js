@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
 import { withStyles } from "@material-ui/styles"
-import { URL_ME, URL_LIST } from '../../Requests'
+import { URL_ME, URL_LIST, URL_PRIVATE_LISTS } from '../../Requests'
 import axios from 'axios'
 import CloseIcon from '@material-ui/icons/Close'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
@@ -124,6 +124,7 @@ export default function PageList() {
     const classes = useStyles()
     const [user, setUser] = React.useState(USER_VALUES)
     const [noti, setNoti] = React.useState(NOTI_VALUES)
+    const [imgdata, setImgdata] = React.useState([])
     const [open, setOpen] = React.useState(false)
     const [values, setValues] = React.useState(INITIAL_STATE)
     const [snackopen, setSnackopen] = React.useState(true)
@@ -155,15 +156,35 @@ export default function PageList() {
         }
         try {
             getUser()
-
         } catch (err) {
             setNoti({ err: "session expired! Login again" })
         }
-
-        //clean up hook
         return () => isSubscribed = false
     }, [])
 
+
+    useEffect(() => {
+        let isSubscribed = true
+        const getData = async () => {
+            try {
+                let token = localStorage.getItem('token')
+                setAuthToken(token)
+                let cb = await axios.get(URL_PRIVATE_LISTS)
+                if (isSubscribed) {
+                    setImgdata(cb.data.data)
+                    
+                }
+            } catch (err) {
+               
+            }
+        }
+        try {
+            getData()
+        } catch (err) {
+           
+        }
+        return () => isSubscribed = false
+    }, [])
 
     const onClose = () => {
         setSnackopen(false)
@@ -171,45 +192,10 @@ export default function PageList() {
 
     const handleClickOpen = () => {
         setOpen(true)
-    };
+    }
 
     const handleClose = () => {
         setOpen(false)
-    };
-
-    const handleImage = (e) => {
-        setValues({
-            image: e.target.files
-        })
-        formData.append('image', e.target.files[0]);
-    }
-
-    const handleDescriptionChange = (e) => {
-        setValues({ description: e.target.value })
-        formData.set('description', e.target.value);
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-
-        try {
-            const cb = await axios({
-                method: 'post',
-                url: URL_LIST,
-                data: formData,
-                config: { headers: { 'Content-Type': 'multipart/form-data' } }
-            })
-            if (cb.data.err !== '') {
-                setNoti({ err: cb.data.err })
-            } else {
-                setSnackopen(false)
-                history.push('/Page-list')
-            }
-
-        } catch (err) {
-            setNoti({ err: err })
-        }
-
     }
 
     return (
@@ -288,26 +274,17 @@ export default function PageList() {
                                 open={open}
                                 onClose={handleClose}
                                 aria-labelledby="responsive-dialog-title"
-
                                 PaperProps={{
                                     classes: {
                                         root: classes.Dialog
                                     }
                                 }}
-
-                            >
+                                >
                                 <DialogTitle id="responsive-dialog-title">{"Describe clearly! "}</DialogTitle>
                                 <DialogContent >
-
                                 <PageListUpload />
-
-                                  
-
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button autoFocus color="primary" onClick={handleSubmit}>
-                                        SAVE
-                                     </Button>
                                     <Button onClick={handleClose} color="primary" autoFocus>
                                         CANCEL
                                     </Button>
@@ -316,8 +293,14 @@ export default function PageList() {
                         </Grid>
                     </Grid>
                     
-
-                    <PageListItem />
+                                {
+                                    imgdata? (
+                                        imgdata.map((single, key) => {
+                                            return <PageListItem singleimg={single} key={key} user={user} />
+                                        })
+                                    ):
+                                    ('')
+                                }
                 </Grid>
             </Grid>
 
