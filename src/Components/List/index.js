@@ -245,7 +245,7 @@ export default function PageList() {
                                 }}
                             >
                                 <DialogTitle id="responsive-dialog-title">{"Describe clearly! "}</DialogTitle>
-                                <DialogContent >
+                                <DialogContent className={classes.Dialogcontent} >
                                     <PageListUpload />
                                 </DialogContent>
                                 <DialogActions>

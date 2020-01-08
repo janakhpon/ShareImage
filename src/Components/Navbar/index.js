@@ -11,6 +11,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import LockIcon from '@material-ui/icons/Lock'
 import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import * as routes from '../../Routes'
@@ -81,9 +87,21 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         color: "#d90429",
     },
+    btn: {
+        color: '#ffffff',
+    },
     name: {
         margin: theme.spacing(1),
         color: '#011627',
+    },
+    Dialog: {
+        background: '#002c4c',
+        color: '#ffffff',
+    },
+    Dialogcontent: {
+        maxWidth: '100%',
+        background: '#002c4c',
+        color: '#ffffff',
     },
 }));
 
@@ -95,11 +113,24 @@ const NavLink = styled(Link)`
     }
 `;
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function PageNav({ user, noti, count }) {
 
-    const { username } = user
-    const { err} = noti
+    const { username, position, email } = user
+    const { err } = noti
     const { notilength } = count
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const history = useHistory()
     const classes = useStyles();
@@ -181,7 +212,7 @@ export default function PageNav({ user, noti, count }) {
                 <Button
                     color="secondary"
                     className={classes.name}
-                    onClick={lockMeOut}
+                    onClick={handleClickOpen}
                 >
                     {username}
                 </Button>
@@ -259,7 +290,7 @@ export default function PageNav({ user, noti, count }) {
                 <Button
                     color="secondary"
                     className={classes.name}
-                    onClick={lockMeOut}
+                    onClick={handleClickOpen}
                 >
                     {username}
                 </Button>
@@ -363,6 +394,31 @@ export default function PageNav({ user, noti, count }) {
                         renderMenuAuthed
                     )
             }
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+                PaperProps={{
+                    classes: {
+                        root: classes.Dialog
+                    }
+                }}
+            >
+                <DialogTitle id="alert-dialog-slide-title">{username}</DialogTitle>
+                <DialogContent className={classes.Dialogcontent}>
+                    <DialogContentText id="alert-dialog-slide-description" className={classes.Dialogcontent}>
+                        {username} is a {position} at Technological University of Mawlamyine. You can get in touch with this {position} via {email} .
+              </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary" className={classes.btn}>
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
