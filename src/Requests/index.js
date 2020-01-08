@@ -1,5 +1,5 @@
-// const URL = `https://tumlmimg.herokuapp.com/`
-const URL = 'http://localhost:5000/'
+const URL = `https://tumlmimg.herokuapp.com/`
+// const URL = 'http://localhost:5000/'
 
 export const MAIN_URL = 'http://localhost:5000/'
 export const URL_USER_SIGNUP = `${URL}userapi/usersignup`
