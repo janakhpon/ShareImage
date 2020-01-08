@@ -64,16 +64,19 @@ export default function PageListItem({ singleimg, user }) {
                                     {moment(date, 'x').fromNow()}
                                 </Typography>
                                 <Typography variant="body2" gutterBottom>
-                                    {description}
+                                    Description : {description}
                                 </Typography>
                                 <Typography variant="body2" gutterBottom>
-                                    {mimetype}
+                                    IMG : {mimetype}
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    ID : {_id}
                                 </Typography>
                                 <Typography variant="body1">
-                                    By {username}
+                                    By : {username}
                                 </Typography>
                                 <Typography variant="body2">
-                                    A {position} of TU(MLM)
+                                    {position} at Technological University(Mawlamyine)
                                 </Typography>
                             </Grid>
                             <Grid item container direction="row">

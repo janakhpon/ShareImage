@@ -9,18 +9,15 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import TextField from '@material-ui/core/TextField'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
-import { withStyles } from "@material-ui/styles"
-import { URL_ME, URL_LIST, URL_PRIVATE_LISTS } from '../../Requests'
+import { URL_ME, URL_PRIVATE_LISTS } from '../../Requests'
 import axios from 'axios'
 import CloseIcon from '@material-ui/icons/Close'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import setAuthToken from '../utils'
-import { useHistory } from 'react-router-dom'
 import PageListUpload from '../ListForm'
 
 const useStyles = makeStyles(theme => ({
@@ -76,36 +73,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const styles = {
-    underline: {
-        // normal style
-        "&::before": {
-            borderBottom: "4px solid green"
-        },
-        // hover style
-        "&:hover:not(.Mui-disabled):before": {
-            borderBottom: "4px solid blue"
-        },
-        // focus style
-        "&::after": {
-            borderBottom: "4px solid red"
-        },
-
-        background: '#002c4c',
-        color: '#ffffff',
-    }
-};
-
-const CustomTextField = withStyles(styles)(props => {
-    const { classes, ...other } = props;
-    return <TextField InputProps={{ className: classes.underline }} {...other} />;
-});
-
-const INITIAL_STATE = {
-    description: '',
-    image: null
-}
-
 const NOTI_VALUES = {
     msg: '',
     err: ""
@@ -120,17 +87,14 @@ const USER_VALUES = {
 }
 
 export default function PageList() {
-    const history = useHistory()
     const classes = useStyles()
     const [user, setUser] = React.useState(USER_VALUES)
     const [noti, setNoti] = React.useState(NOTI_VALUES)
     const [imgdata, setImgdata] = React.useState([])
     const [open, setOpen] = React.useState(false)
-    const [values, setValues] = React.useState(INITIAL_STATE)
     const [snackopen, setSnackopen] = React.useState(true)
     const theme = useTheme()
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-    let formData = new FormData()
 
 
     useEffect(() => {
@@ -172,16 +136,16 @@ export default function PageList() {
                 let cb = await axios.get(URL_PRIVATE_LISTS)
                 if (isSubscribed) {
                     setImgdata(cb.data.data)
-                    
+
                 }
             } catch (err) {
-               
+
             }
         }
         try {
             getData()
         } catch (err) {
-           
+
         }
         return () => isSubscribed = false
     }, [])
@@ -255,7 +219,7 @@ export default function PageList() {
             }
             <Grid container alignContent="center" justify="center">
                 <Grid item xs={12} sm={12} md={10} lg={10} xl={8}>
-                <Grid container
+                    <Grid container
                         direction="row"
                         justify="flex-start"
                         alignItems="flex-start">
@@ -279,10 +243,10 @@ export default function PageList() {
                                         root: classes.Dialog
                                     }
                                 }}
-                                >
+                            >
                                 <DialogTitle id="responsive-dialog-title">{"Describe clearly! "}</DialogTitle>
                                 <DialogContent >
-                                <PageListUpload />
+                                    <PageListUpload />
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handleClose} color="primary" autoFocus>
@@ -292,15 +256,18 @@ export default function PageList() {
                             </Dialog>
                         </Grid>
                     </Grid>
-                    
-                                {
-                                    imgdata? (
-                                        imgdata.map((single, key) => {
-                                            return <PageListItem singleimg={single} key={key} user={user} />
-                                        })
-                                    ):
-                                    ('')
-                                }
+
+                    {
+                        imgdata ? (
+                            imgdata.map((single, key) => {
+                                return <PageListItem singleimg={single} key={key} user={user} />
+                            })
+                        ) :
+                            ('')
+                    }
+                    {
+                        localStorage.setItem('noti', imgdata.length)
+                    }
                 </Grid>
             </Grid>
 
