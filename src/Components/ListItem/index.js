@@ -11,8 +11,15 @@ import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import axios from 'axios'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import { useHistory } from 'react-router-dom'
-import { MAIN_URL, URL_LIST_REMOVE } from '../../Requests'
+import { MAIN_URL, URL_LIST_REMOVE, URL_LIST_ID } from '../../Requests'
+import './index.css'
+const formData = new FormData()
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -53,6 +60,11 @@ const useStyles = makeStyles(theme => ({
         color: '#ffffff',
         margin: theme.spacing(2),
     },
+    btn1: {
+        backgroundColor: '#02c39a',
+        color: '#ffffff',
+        margin: theme.spacing(2),
+    },
     notibox: {
         color: "#ffffff",
         backgroundColor: "#20bf55",
@@ -68,22 +80,95 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
     },
+    Dialog: {
+        background: '#002c4c',
+        color: '#ffffff',
+    },
+    Dialogcontent: {
+        maxWidth: '100%',
+        background: '#002c4c',
+        color: '#ffffff',
+    },
 }));
+
+
 
 const NOTI_VALUES = {
     msg: '',
     err: ''
 }
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function PageListItem({ singleimg, user }) {
     const { _id, date, description, image, mimetype } = singleimg
     const { username, position } = user
+
+    const INITIAL_STATE = {
+        description: singleimg.description,
+        image: null
+    }
+
+    const [values, setValues] = React.useState(INITIAL_STATE)
     const [noti, setNoti] = React.useState(NOTI_VALUES)
     const [open, setOpen] = React.useState(true)
+    const [updateopen, setUpdateopen] = React.useState(false)
     const classes = useStyles();
     const history = useHistory()
+
     const onClose = () => {
         setOpen(false)
+    }
+
+    const handleUpdateOpen = () => {
+        setUpdateopen(true)
+    }
+
+    const handleUpdateClose = () => {
+        setUpdateopen(false)
+    }
+    const handleDescription = (e) => {
+        e.preventDefault()
+        setValues({
+            description: e.target.value
+        })
+        formData.set('description', e.target.value);
+    }
+
+
+    const handleImage = async (e) => {
+        e.preventDefault()
+        setValues({
+            image: e.target.files
+        })
+        formData.append('image', e.target.files[0]);
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        let url = `${URL_LIST_ID}${_id}`
+
+        try {
+            let response = await axios({
+                method: 'post',
+                url: url,
+                data: formData,
+                config: { headers: { 'Content-Type': 'multipart/form-data' } }
+            })
+
+            if (response.data.err !== '') {
+                setNoti({ err: response.data.err })
+            } else {
+                history.push('/Page-list')
+            }
+
+        } catch (err) {
+            setNoti({ err: err })
+        }
+
+
     }
 
     const handleRemove = async (e) => {
@@ -96,13 +181,11 @@ export default function PageListItem({ singleimg, user }) {
                 url: url,
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }
             })
-
-            console.log(cb)
-            // if (cb.data.err !== '') {
-            //     setNoti({ err: cb.data.err })
-            // } else {
-            //     history.push('/Page-signin')
-            // }
+            if (cb.data.err !== '') {
+                setNoti({ err: cb.data.err })
+            } else {
+                history.push('/Page-list')
+            }
 
         } catch (err) {
             setNoti({ err: err })
@@ -142,6 +225,47 @@ export default function PageListItem({ singleimg, user }) {
                         ''
                     )
             }
+            <Dialog
+                open={updateopen}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleUpdateClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+                PaperProps={{
+                    classes: {
+                        root: classes.Dialog
+                    }
+                }}
+            >
+                <DialogTitle id="alert-dialog-slide-title">{username}</DialogTitle>
+                <DialogContent className={classes.Dialogcontent}>
+                    <Grid container direction="row" justify="center" alignitems="center" spacing={2}>
+                        <Grid item xs={12} className="grid">
+                            <Paper className='paper'>
+                                <input type="text" id="description" name="description" className="form-control" value={values.description} onChange={handleDescription} />
+                            </Paper>
+                        </Grid>
+
+                        <Grid item xs={12} className="grid">
+                            <Paper className='paper' >
+                                <input type="file" className="form-control" id="image" name="image" ref={values.image} onChange={handleImage} />
+                            </Paper>
+                        </Grid>
+
+                        <Grid item xs={12} className="grid">
+                            <Paper className='paper'>
+                                <input type="submit" value="UPLOAD" className="btn-submit" onClick={handleSubmit} />
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleUpdateClose} color="primary" className={classes.btn}>
+                        OK
+                </Button>
+                </DialogActions>
+            </Dialog>
             <Paper className={classes.paper}>
                 <Grid container spacing={2}>
                     <Grid item>
@@ -174,8 +298,10 @@ export default function PageListItem({ singleimg, user }) {
                             <Grid item container direction="row">
                                 <Grid xs item>
                                     <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                                        UPDATE
-                                </Typography>
+                                        <Button variant="contained" className={classes.btn1} onClick={handleUpdateOpen}>
+                                            UPDATE
+                                        </Button>
+                                    </Typography>
                                 </Grid>
                                 <Grid xs item>
                                     <Typography variant="body2" style={{ cursor: 'pointer' }}>
