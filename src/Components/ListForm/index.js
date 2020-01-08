@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { URL_LIST } from '../../Requests'
+import './index.css'
 const formData = new FormData()
 
 
@@ -56,20 +57,7 @@ const PageListUpload = () => {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            let response = await axios({
-                method: 'post',
-                url: URL_LIST,
-                data: formData,
-                config: { headers: { 'Content-Type': 'multipart/form-data' } }
-            })
-
-            console.log(response)
-        } catch (err) {
-            console.log(err)
-        }
+        e.preventDefault()
 
         try {
             let response = await axios({
@@ -84,7 +72,7 @@ const PageListUpload = () => {
                 setOpen(true)
             } else {
                 setOpen(false)
-                history.push('Page-list')
+                history.push('/Page-list')
             }
 
         } catch (err) {
@@ -117,13 +105,13 @@ const PageListUpload = () => {
 
                             <Grid item xs={12} className="grid">
                                 <Paper className='paper' >
-                                    <input type="file" className="form-control-file" id="image" name="image" ref={values.image} onChange={handleImage} />
+                                    <input type="file" className="form-control" id="image" name="image" ref={values.image} onChange={handleImage} />
                                 </Paper>
                             </Grid>
 
                             <Grid item xs={12} className="grid">
                                 <Paper className='paper'>
-                                    <input type="submit" value="upload to Gallery" className="btn btn-primary py-2 px-4 text-white" onClick={handleSubmit} />
+                                    <input type="submit" value="UPLOAD" className="btn-submit" onClick={handleSubmit} />
                                 </Paper>
                             </Grid>
                         </Grid>

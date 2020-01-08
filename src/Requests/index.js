@@ -13,5 +13,6 @@ export const URL_LISTS = `${URL}storageapi/lists`
 export const URL_PRIVATE_LISTS = `${URL}storageapi/privatelists`
 export const URL_LIST_ID = `${URL}storageapi/list/`
 export const URL_LIST = `${URL}storageapi/list`
+export const URL_LIST_RESET = `${URL}storageapi/reset`
 export const URL_LIST_REMOVE = `${URL}storageapi/remove/`
 
