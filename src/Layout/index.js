@@ -11,6 +11,7 @@ import PageRegister from '../Components/Register'
 import PageSignup from '../Components/Signup'
 import PageSignin from '../Components/Signin'
 import PageList from '../Components/List'
+import PageDev from '../Components/Devpanel'
 
 const NOTI_VALUES = {
   msg: '',
@@ -75,7 +76,7 @@ const Layout = () => {
         setAuthToken(token)
         let cb = await axios.get(URL_PRIVATE_LISTS)
         if (isSubscribed) {
-          setCount({notilength : cb.data.data.length})
+          setCount({ notilength: cb.data.data.length })
 
         }
       } catch (err) {
@@ -123,6 +124,11 @@ const Layout = () => {
             exact
             path={routes.LIST}
             component={() => <PageList />}
+          />
+          <Route
+            exact
+            path={routes.DEV}
+            component={() => <PageDev />}
           />
         </Grid>
       </Grid>
