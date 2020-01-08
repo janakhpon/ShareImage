@@ -1,21 +1,63 @@
-# Create React App example
+# ShareImage
+  ShareImage is a wallpaper website built on MERN stack using Express RESTFUL API on Backend. ShareImage can be used as a sharing platform for Signature, scanned document and also can be used to upload images and previews for Technological University of Mawlamyine's data reference and DashProject of Projects store. Notice that CRUD options are available to admin only. Please Check the `RELEASE_STATUS` before you clone. Here is a deployed link [herokudeploy](https://ei-sgallery.herokuapp.com/)
 
-## How to use
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
 
-```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/create-react-app
-cd create-react-app
-```
+# Usage
+clone the server repository first
+    git clone https://github.com/janakhpon/ShareImage.git
 
-Install it and run:
+clone the client repository
+    git clone https://github.com/janakhpon/ShareImage.git
 
-```sh
-npm install
-npm start
-```
+Get into server directory root folder
+    cd ShareImage
 
-## The idea behind the example
+Install Dependencies using [npm](https://www.npmjs.com/)
 
-This example demonstrates how you can use [Create React App](https://github.com/facebookincubator/create-react-app).
+    npm install
+    npm i -d
+    npm run start
+    npm run dev
+
+Install Dependencies using [yarn](https://yarnpkg.com/en/)
+
+    yarn install
+    yarn add
+    yarn start
+    yarn dev
+
+then for client,
+
+Get into client directory root folder
+    cd ShareImage
+
+Install Dependencies using [npm](https://www.npmjs.com/)
+
+    npm install
+    npm i -d
+    npm run start
+    npm run dev
+
+Install Dependencies using [yarn](https://yarnpkg.com/en/)
+
+    yarn install
+    yarn add
+    yarn start
+    yarn dev
+
+
+
+# FULL RESOURCES
+ [BACKEND/SERVER](https://tumlmimg.herokuapp.com/)
+ [FRONTEND/CLIENT](https://ei-sgallery.herokuapp.com/)
+
+
+## RELEASE_STATUS:IN PROGRESS
+## RELEASE_CODE: GDEV020
+ Sorry this project is not completely done yet and only a few features are available. If you are considering about cloning this project please wait till it's completed.
+
+## Description
+ If you wanna try it on your own clone the `SERVER-SIDE-REPOSITORY` firs then use your own `MONGO_URI` then run `start` or `dev` whatever u like and if it went without errors clone this `CLIENT-SIDE` repo and start the application. I'm sure there will be a few or more errors as this project is completely done for both `CLIENT` and `SERVER`.
+    
+
