@@ -1,7 +1,7 @@
 const URL = `https://tumlmimg.herokuapp.com/`
 // const URL = 'http://localhost:5000/'
 
-export const MAIN_URL = 'http://localhost:5000/'
+export const MAIN_URL = 'https://tumlmimg.herokuapp.com'
 export const URL_USER_SIGNUP = `${URL}userapi/usersignup`
 export const URL_USER_SIGNIN = `${URL}userapi/usersignin`
 export const URL_USER_UPDATE = `${URL}userapi/updateuser`
