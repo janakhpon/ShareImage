@@ -27,7 +27,7 @@ export default function PageHome() {
                 WELCOME
             </Typography>
             <Typography variant="subtitle2" gutterBottom align="center">
-                subtitle2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+            Share Previews, Image and Scanned Signatures, documents with privacy
             </Typography>
         </div>
     );

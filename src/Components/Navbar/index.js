@@ -183,6 +183,17 @@ export default function PageNav({ user, noti, count }) {
                     LOGIN
             </NavLink>
             </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button
+                    color="secondary"
+                    size="small"
+                    className={classes.button}
+                    startIcon={<LockIcon />}
+                    onClick={lockMeOut}
+                >
+                    RESET
+        </Button>
+            </MenuItem>
         </Menu>
     );
 
@@ -225,7 +236,7 @@ export default function PageNav({ user, noti, count }) {
                     startIcon={<LockIcon />}
                     onClick={lockMeOut}
                 >
-                    SIGNOUT
+                    RESET
             </Button>
             </MenuItem>
         </Menu>
@@ -253,6 +264,17 @@ export default function PageNav({ user, noti, count }) {
                 <NavLink to={routes.SIGNIN}>
                     LOGIN
     </NavLink>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button
+                    color="secondary"
+                    size="small"
+                    className={classes.button}
+                    startIcon={<LockIcon />}
+                    onClick={lockMeOut}
+                >
+                    SIGNOUT
+        </Button>
             </MenuItem>
         </Menu>
     );
