@@ -1,5 +1,5 @@
 # ShareImage
-  ShareImage is a wallpaper website built on MERN stack using Express RESTFUL API on Backend. ShareImage can be used as a sharing platform for Signature, scanned document and also can be used to upload images and previews for Technological University of Mawlamyine's data reference and DashProject of Projects store. Notice that CRUD options are available to admin only. Please Check the `RELEASE_STATUS` before you clone. Here is a deployed link [herokudeploy](https://shareimage.now.sh/)
+  ShareImage is built for storing file as cdn for other projects so basically you can share Previews, Image and Scanned Signatures with privacy. It's built on MERN stack using Express RESTFUL API on Backend. ShareImage can be used as a sharing platform for Signature, scanned document and also can be used to upload images and previews for Technological University of Mawlamyine's data reference and DashProject of Projects store. Notice that CRUD options are available to admin only. Please Check the `RELEASE_STATUS` before you clone. Here is a deployed link [herokudeploy](https://shareimage.now.sh/)
 
 
 
