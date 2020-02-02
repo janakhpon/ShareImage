@@ -136,7 +136,6 @@ export default function PageList() {
                 let cb = await axios.get(URL_PRIVATE_LISTS)
                 if (isSubscribed) {
                     setImgdata(cb.data.data)
-
                 }
             } catch (err) {
 
@@ -161,6 +160,7 @@ export default function PageList() {
     const handleClose = () => {
         setOpen(false)
     }
+
 
     return (
         <>
@@ -270,9 +270,6 @@ export default function PageList() {
                     }
                 </Grid>
             </Grid>
-
-
-
         </>
     );
 }
