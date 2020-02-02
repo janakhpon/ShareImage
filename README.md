@@ -4,30 +4,8 @@
 
 
 # Usage
-clone the server repository first
-    git clone https://github.com/janakhpon/ShareImage.git
-
 clone the client repository
     git clone https://github.com/janakhpon/ShareImage.git
-
-Get into server directory root folder
-    cd ShareImage
-
-Install Dependencies using [npm](https://www.npmjs.com/)
-
-    npm install
-    npm i -d
-    npm run start
-    npm run dev
-
-Install Dependencies using [yarn](https://yarnpkg.com/en/)
-
-    yarn install
-    yarn add
-    yarn start
-    yarn dev
-
-then for client,
 
 Get into client directory root folder
     cd ShareImage
@@ -54,7 +32,7 @@ Install Dependencies using [yarn](https://yarnpkg.com/en/)
 
 
 ## RELEASE_STATUS:IN PROGRESS
-## RELEASE_CODE: GDEV020
+## RELEASE_CODE: GDEV030
  Sorry this project is not completely done yet and only a few features are available. If you are considering about cloning this project please wait till it's completed.
 
 ## Description
