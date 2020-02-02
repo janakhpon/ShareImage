@@ -201,7 +201,7 @@ const PageSignin = () => {
                 localStorage.setItem('token', cb.data.token);
                 setAuthToken(cb.data.token)
                 setSnackopen(false)
-                history.push('Page-list')
+                history.push(`${routes.LIST}`)
             }
 
         } catch (err) {
