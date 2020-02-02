@@ -195,7 +195,7 @@ const PageSignup = () => {
                 setNoti({ err: cb.data.err })
             } else {
                 setOpen(false)
-                history.push('/Page-signin')
+                history.push(`${routes.SIGNIN}`)
             }
 
         } catch (err) {
