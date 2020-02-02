@@ -7,9 +7,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { URL_LIST } from '../../Requests'
+import * as routes from '../../Routes'
 import './index.css'
 const formData = new FormData()
-
 
 const useStyles = makeStyles(theme => ({
     backdrop: {
@@ -18,22 +18,17 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
 const INITIAL_STATE = {
     description: "",
     image: null
 }
-
 
 const NOTI_VALUES = {
     msg: '',
     err: ''
 }
 
-
 const PageListUpload = () => {
-
     const [values, setValues] = useState(INITIAL_STATE)
     const [noti, setNoti] = React.useState(NOTI_VALUES)
     const [open, setOpen] = React.useState(false)
@@ -47,7 +42,6 @@ const PageListUpload = () => {
         formData.set('description', e.target.value);
     }
 
-
     const handleImage = async (e) => {
         e.preventDefault()
         setValues({
@@ -58,7 +52,6 @@ const PageListUpload = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             let response = await axios({
                 method: 'post',
@@ -66,20 +59,17 @@ const PageListUpload = () => {
                 data: formData,
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }
             })
-
             if (response.data.err !== '') {
                 setNoti({ err: response.data.err })
                 setOpen(true)
             } else {
                 setOpen(false)
-                history.push('/Page-list')
+                history.push(`${routes.LIST}`)
             }
 
         } catch (err) {
             setNoti({ err: err })
         }
-
-
     }
 
     return (
@@ -121,9 +111,5 @@ const PageListUpload = () => {
 
         </>
     );
-
-
-
 }
-
 export default PageListUpload
