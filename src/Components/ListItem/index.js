@@ -18,6 +18,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { useHistory } from 'react-router-dom'
 import { MAIN_URL, URL_LIST_REMOVE, URL_LIST_ID } from '../../Requests'
+import * as routes from '../../Routes'
 import './index.css'
 const formData = new FormData()
 
@@ -91,8 +92,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
 const NOTI_VALUES = {
     msg: '',
     err: ''
@@ -161,7 +160,7 @@ export default function PageListItem({ singleimg, user }) {
             if (response.data.err !== '') {
                 setNoti({ err: response.data.err })
             } else {
-                history.push('/Page-list')
+                history.push(`${routes.LIST}`)
             }
 
         } catch (err) {
@@ -184,13 +183,12 @@ export default function PageListItem({ singleimg, user }) {
             if (cb.data.err !== '') {
                 setNoti({ err: cb.data.err })
             } else {
-                history.push('/Page-list')
+                history.push(`${routes.LIST}`)
             }
 
         } catch (err) {
             setNoti({ err: err })
         }
-
     }
 
     return (
