@@ -25,7 +25,6 @@ class PageListUpload extends React.Component {
         formData.set('description', e.target.value);
     }
 
-
     handleImage = (e) => {
         this.setState({
             image: e.target.files
@@ -35,8 +34,7 @@ class PageListUpload extends React.Component {
     }
 
     handleSubmit = async (e) => {
-        e.preventDefault();
-
+        e.preventDefault()
         try {
             let response = await axios({
                 method: 'post',
@@ -44,17 +42,11 @@ class PageListUpload extends React.Component {
                 data: formData,
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }
             })
-
             console.log(response)
         } catch (err) {
             console.log(err)
         }
-
-
     }
-
-
-
 
     render() {
         return (
@@ -82,8 +74,6 @@ class PageListUpload extends React.Component {
             </>
         );
     }
-
-
 }
 
 export default PageListUpload
