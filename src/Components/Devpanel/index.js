@@ -8,7 +8,6 @@ import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import axios from 'axios'
 import { URL_USER_RESET, URL_LIST_RESET } from '../../Requests'
-
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -166,7 +165,6 @@ export default function PageDev() {
             <Typography variant="subtitle2" gutterBottom align="center">
                 You can not recover any of these users data or files  after reset!. Think twice befor click the buttons above .
             </Typography>
-
         </div>
     );
 }

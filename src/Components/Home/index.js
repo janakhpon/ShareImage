@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -17,10 +16,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
 export default function PageHome() {
-    const classes = useStyles();
-
+    const classes = useStyles()
     return (
         <div className={classes.root}>
             <Typography variant="h2" component="h3" gutterBottom align="center">

@@ -67,7 +67,6 @@ const Layout = () => {
     return () => isSubscribed = false
   }, [])
 
-
   useEffect(() => {
     let isSubscribed = true
     const getData = async () => {
@@ -77,7 +76,6 @@ const Layout = () => {
         let cb = await axios.get(URL_PRIVATE_LISTS)
         if (isSubscribed) {
           setCount({ notilength: cb.data.data.length })
-
         }
       } catch (err) {
 
@@ -90,7 +88,6 @@ const Layout = () => {
     }
     return () => isSubscribed = false
   }, [])
-
 
   return (
     <>
