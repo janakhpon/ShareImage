@@ -124,7 +124,7 @@ export default function PageList() {
             setNoti({ err: "session expired! Login again" })
         }
         return () => isSubscribed = false
-    }, [])
+    }, [user])
 
 
     useEffect(() => {
@@ -147,7 +147,7 @@ export default function PageList() {
 
         }
         return () => isSubscribed = false
-    }, [])
+    }, [imgdata])
 
     const onClose = () => {
         setSnackopen(false)
